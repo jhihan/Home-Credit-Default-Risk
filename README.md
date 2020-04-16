@@ -14,9 +14,9 @@ The columns with too many missing values contain too less information. Imputatio
 ### Rreducing collinearity
 Collinear features lead to decreased generalization performance on the test set due to the high variance and the accessibility to some relative importance of variables. In order to solve this problem, only one of the collinear feature is preserved and others are removed. In order to achieve this purpose, the correlation matrix must be calculated first. Then we traverse across the strickly upper triangular part of correlation matrix to remove a highly correlated variable (here threshold = 0.9) in the column of the matrix.
 ## Encoding categorical data
-## Building model with XGboost
-
-Ref:
+## Building model with XGBoost
+There are still many columns with missing values. One way to fill the missing values is impute these value with mean, average or some values which we can infer from the domain knowledge. However, doing missing data imputation manually in the large datasets is tedious. Therefore, choosing a library which automatically can handle missing data is a favorable approach. Two of the famous libraries which fulfill our need are XGBoost and LightGBM. They are both gradient boosting framework and are popular in kaggle competitions. Here we use XGBoost tree classifier to build up the model.
+## Reference
 1. https://www.kaggle.com/willkoehrsen/automated-feature-engineering-basics
 2. https://github.com/sunny1297/Risk-Analytics
 3. Collinearity: a review of methods to deal with it and a simulation study evaluating their performance
