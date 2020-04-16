@@ -4,9 +4,14 @@ This project is from the kaggle competition https://www.kaggle.com/c/home-credit
 2. Home_credit_default_risk.ipynb : Building the machine learning model based on the automatic feature engineering with "featuretools" and the feature selections process.
 ## Data expolatory analysis
 ## Memory reduction
+With data size increasing, sometimes we are not able to deal with the data in our disk. Downcasting the data types to the suitable subtypes is an efficient way to reduce the memory.
+float: float64, float32, float16
+int: int64, int32, int16
+[0,1]=> bool
+object => category (please know that the categorical datatype don't recognize np.nan when using unique() )
 ## Feature engineering with Featuretools
 ## Feature selection
-The feature matrix from the last step is very large (will be larger after encoding categorical data) and contains lots of missing values. Without feature selection, the training process of ML models would be very slow. Some of the redundant features might even decrease the performance of the model. Therefore, getting rid of some unnecessary or redundant information is an important step.
+The feature matrix calculated from the last step is very large (will be larger after encoding categorical data) and contains lots of missing values. Without feature selection, the training process of ML models would be very slow. Some of the redundant features might even decrease the performance of the model. Therefore, getting rid of some unnecessary or redundant information is an important step.
 ### Removing unnecessary features
 After the data engineering from Featuretools, we will also get some column variables which are the function of keys. Because keys are data items that exclusively identify a record and are not the features which are useful in the model.
 ### Removing columns with too many missing values
@@ -19,5 +24,9 @@ There are still many columns with missing values. One way to fill the missing va
 ## Reference
 1. https://www.kaggle.com/willkoehrsen/automated-feature-engineering-basics
 2. https://github.com/sunny1297/Risk-Analytics
-3. Collinearity: a review of methods to deal with it and a simulation study evaluating their performance
+3. How to handle BigData Files on Low Memory?
+https://towardsdatascience.com/how-to-learn-from-bigdata-files-on-low-memory-incremental-learning-d377282d38ff
+4. Optimize the Pandas Dataframe memory consuming for low environment
+https://medium.com/@alielagrebi/optimize-the-pandas-dataframe-memory-consuming-for-low-environment-24aa74cf9413
+4. Collinearity: a review of methods to deal with it and a simulation study evaluating their performance
 https://onlinelibrary.wiley.com/doi/10.1111/j.1600-0587.2012.07348.x
