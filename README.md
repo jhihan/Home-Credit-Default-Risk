@@ -5,10 +5,14 @@ This project is from the kaggle competition https://www.kaggle.com/c/home-credit
 ## Exploratory data analysis
 ## Memory reduction
 With data size increasing, sometimes we are not able to deal with the data in our disk. Downcasting the data types to the suitable subtypes is an efficient way to reduce the memory.
+
 float: float64, float32, float16
+
 int: int64, int32, int16
+
 [0,1]=> bool
-object => category (please know that the categorical datatype don't recognize np.nan when using unique() )
+
+object => category (please know that np.nan is not in categories )
 ## Feature engineering with Featuretools
 ## Feature selection
 The feature matrix calculated from the last step is very large (will be larger after encoding categorical data) and contains lots of missing values. Without feature selection, the training process of ML models would be very slow. Some of the redundant features might even decrease the performance of the model. Therefore, getting rid of some unnecessary or redundant information is an important step.
@@ -19,6 +23,13 @@ The columns with too many missing values contain too less information. Imputatio
 ### Rreducing collinearity
 Collinear features lead to decreased generalization performance on the test set due to the high variance and the accessibility to some relative importance of variables. In order to solve this problem, only one of the collinear feature is preserved and others are removed. In order to achieve this purpose, the correlation matrix must be calculated first. Then we traverse across the strickly upper triangular part of correlation matrix to remove a highly correlated variable (here threshold = 0.9) in the column of the matrix.
 ## Encoding categorical data
+In order to convert all the input of the machine learning data into numerical datatype, we must do encoder for categorical variables. There are two ways: 
+
+1. label encoder: convert each value of a categorical variable into single integer. However, the model will misunderstand the data to be in some kind of order. This encoder should be only used if the original values of the categorical variables have intrinsic order or the categorical variables are binary variables.
+
+2. one-hot encoder: convert each categorical value into a new binary variable. However, this operation will increase the number of feature space.
+
+Therefore, We use label encoder for categorical variables with 2 unique categories (or 1 categories + np.nan) and one-hot Encoder for categorical variables with more than 2 unique categories. When doing label encoder with np.nan, we must be careful because the datatype "category" doesn't recognize np.nan. In this case, we should add a new category such as "NAN" into the categories-list  and fill the missing value with "NAN".
 ## Building model with XGBoost
 There are still many columns with missing values. One way to fill the missing values is impute these value with mean, average or some values which we can infer from the domain knowledge. However, doing missing data imputation manually in the large datasets is tedious. Therefore, choosing a library which automatically can handle missing data is a favorable approach. Two of the famous libraries which fulfill our need are XGBoost and LightGBM. They are both gradient boosting framework and are popular in kaggle competitions. Here we use XGBoost tree classifier to build up the model.
 ## Reference
