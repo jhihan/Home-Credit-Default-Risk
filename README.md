@@ -3,14 +3,6 @@ This project is from the kaggle competition https://www.kaggle.com/c/home-credit
 1. Home_credit_default_risk_app.ipynb :The data expolatory analysis and the machine learning model building based on the main table.
 2. Home_credit_default_risk.ipynb : Building the machine learning model based on the automatic feature engineering with "featuretools" and the feature selections process.
 ## Exploratory data analysis
-Featuretools automatically creates features from relational datasets. This tool use the cencept Deep Feature Synthesis for automated feature engineering. The procedure is as followed:
-
-1. we load the dataframes as entities with the given primary key
-
-2. we define the relationship between different entity
-
-3. We choose the agg primitives function and the depth of a deep feature, which is the number of primitives required to make the feature.
-
 ## Memory reduction
 With data size increasing, sometimes we are not able to deal with the data in our disk. Downcasting the data types to the suitable subtypes is an efficient way to reduce the memory.
 
@@ -22,6 +14,13 @@ int: int64, int32, int16
 
 object => category (please know that np.nan is not in categories )
 ## Feature engineering with Featuretools
+Featuretools automatically creates features from relational datasets. This tool use the cencept Deep Feature Synthesis for automated feature engineering. The procedure is as followed:
+
+1. we load the dataframes as entities with the given primary key
+
+2. we define the relationship between different entity
+
+3. We choose the agg primitives function and the depth of a deep feature, which is the number of primitives required to make the feature.
 ## Feature selection
 The feature matrix calculated from the last step is very large (will be larger after encoding categorical data) and contains lots of missing values. Without feature selection, the training process of ML models would be very slow. Some of the redundant features might even decrease the performance of the model. Therefore, getting rid of some unnecessary or redundant information is an important step.
 ### Removing unnecessary features
