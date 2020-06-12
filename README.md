@@ -2,6 +2,7 @@
 This project is from the kaggle competition https://www.kaggle.com/c/home-credit-default-risk/overview and is a good practice to deal with large relational datasets. The feature engineering process with large relational datasets is error-prone and cumbersome, so the automatic feature engineering library tool "Featuretools" ( https://docs.featuretools.com/en/stable/  ) is used in this project in order to save our life. Before the feature engineering, we need to do some data expolatory analysis to understand the data. This project is seperated into two files:
 1. Home_credit_default_risk_app.ipynb :The data expolatory analysis and the machine learning model building based on the main table.
 2. Home_credit_default_risk.ipynb : Building the machine learning model based on the automatic feature engineering with "featuretools" and the feature selections process.
+3. Home_credit_default_risk_more_feature_engineering.ipynb: Building the machine learning model based on the both automatic and manual feature engineering with "featuretools", and the feature selections process.
 ## Exploratory data analysis
 ## Memory reduction
 With data size increasing, sometimes we are not able to deal with the data in our disk. Downcasting the data types to the suitable subtypes is an efficient way to reduce the memory.
@@ -13,6 +14,14 @@ int: int64, int32, int16
 [0,1]=> bool
 
 object => category (please know that np.nan is not in categories )
+## Feature engineering manually
+1. date/time variables: date/time variables have periodicity. In order to keep this kind of property into consideration, we must take the cos and sin components of these variable.
+
+2. the categorical variables which might have intrinsic order: some categorical variables which might have intrinsic order should be carefully checked. They might be better interpreted as numerical features. For example, the education-related feature "NAME_EDUCATION_TYPE" is a candidate we should check. In order to make sure whether there is significant difference between different values of the feature, we need to estimate the standard deviation of the sample ratio
+$\sigma=\sqrt{\frac{p(1-p)}{N}}$ in order to get the confidence interval (95% confidence level means the interval $[p-2\sigma,p+2\sigma]$).
+
+3. creating new features based on some domain knowledge: when reading the HomeCredit_columns_descriptions.csv carefully, we can find that some features like DAYS_EMPLOYED (total days of being employed), AMT_INCOME_TOTAL (total income of the applicant per annum), AMT_ANNUITY (the annuity of each credit loan) can be used to create some interesting features like: INCOME_PER_DAYS_EMPLOYED = AMT_INCOME_TOTAL/DAYS_EMPLOYED.
+
 ## Feature engineering with Featuretools
 Featuretools automatically creates features from relational datasets. This tool use the cencept Deep Feature Synthesis for automated feature engineering. The procedure is as followed:
 
@@ -39,6 +48,18 @@ In order to convert all the input of the machine learning data into numerical da
 Therefore, We use label encoder for categorical variables with 2 unique categories (or 1 categories + np.nan) and one-hot Encoder for categorical variables with more than 2 unique categories. When doing label encoder with np.nan, we must be careful because the datatype "category" doesn't recognize np.nan. In this case, we should add a new category such as "NAN" into the categories-list  and fill the missing value with "NAN".
 ## Building model with XGBoost
 There are still many columns with missing values. One way to fill the missing values is impute these value with mean, average or some values which we can infer from the domain knowledge. However, doing missing data imputation manually in the large datasets is tedious. Therefore, choosing a library which automatically can handle missing data is a favorable approach. Two of the famous libraries which fulfill our need are XGBoost and LightGBM. They are both gradient boosting framework and are popular in kaggle competitions. Here we use XGBoost tree classifier to build up the model.
+
+## Comparison between different data preprocessing and feature engineerings:
+
+In the tree-based model, the feature importance (feature_importances_) is calculated as the decrease in node impurity weighted by the probability of reaching that node. We can check how important the additional features which are created manually. There are two features we created manually in the top 15 ranking: 'EDUCATION_VALUE' ranks 6 and 'CREDIT_PER_ANNUITY' ranks 11.
+
+We compare the ROC AUC sore of the submitted prediction between different data preprocessing approaches. Apparently, the additional manual feature engineering makes our ROC AUC score about 0.01 better in both private and public score.
+
+|   | Private Score | Public score |  
+|---|---|---|
+| All the tables   | 0.76530  | 0.76449 | 
+| All the tables with additional manual feature engineering  |  0.77566 | 0.77547 |
+
 ## Reference
 1. https://www.kaggle.com/willkoehrsen/automated-feature-engineering-basics
 2. https://github.com/sunny1297/Risk-Analytics
