@@ -57,8 +57,8 @@ We compare the ROC AUC sore of the submitted prediction between different data p
 
 |   | Private Score | Public score |  
 |---|---|---|
-| All the tables   | 0.76530  | 0.76449 | 
-| All the tables with additional manual feature engineering  |  0.77566 | 0.77547 |
+| Only automated feature engineering   | 0.76530  | 0.76449 | 
+| Both automated and manual feature engineering  |  0.77566 | 0.77547 |
 
 ## Reference
 1. https://www.kaggle.com/willkoehrsen/automated-feature-engineering-basics
