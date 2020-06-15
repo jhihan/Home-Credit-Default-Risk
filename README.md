@@ -18,11 +18,7 @@ object => category (please know that np.nan is not in categories )
 1. date/time variables: date/time variables have periodicity. In order to keep this kind of property into consideration, we must take the cos and sin components of these variable.
 
 2. the categorical variables which might have intrinsic order: some categorical variables which might have intrinsic order should be carefully checked. They might be better interpreted as numerical features. For example, the education-related feature "NAME_EDUCATION_TYPE" is a candidate we should check. In order to make sure whether there is significant difference between different values of the feature, we need to estimate the standard deviation of the sample ratio
-<img src="https://render.githubusercontent.com/render/math?math=\sigma=\sqrt{\frac{p(1-p)}{N}}"> 
-```math
-\sigma=\sqrt{\frac{p(1-p)}{N}}
-```
-in order to get the confidence interval (95% confidence level means the interval $[p-2\sigma,p+2\sigma]$).
+<img src="https://render.githubusercontent.com/render/math?math=\sigma=\sqrt{\frac{p(1-p)}{N}}">  in order to get the confidence interval (95% confidence level means the interval <img src="https://render.githubusercontent.com/render/math?math=[p-2\sigma,p+2\sigma]">).
 
 3. creating new features based on some domain knowledge: when reading the HomeCredit_columns_descriptions.csv carefully, we can find that some features like DAYS_EMPLOYED (total days of being employed), AMT_INCOME_TOTAL (total income of the applicant per annum), AMT_ANNUITY (the annuity of each credit loan) can be used to create some interesting features like: INCOME_PER_DAYS_EMPLOYED = AMT_INCOME_TOTAL/DAYS_EMPLOYED.
 
