@@ -15,12 +15,27 @@ int: int64, int32, int16
 
 object => category (please know that np.nan is not in categories )
 ## Feature engineering manually
-1. date/time variables: date/time variables have periodicity. In order to keep this kind of property into consideration, we must take the cos and sin components of these variable.
+### date/time variables: 
+date/time variables have periodicity. In order to keep this kind of property into consideration, we must take the cos and sin components of these variable.
 
-2. the categorical variables which might have intrinsic order: some categorical variables which might have intrinsic order should be carefully checked. They might be better interpreted as numerical features. For example, the education-related feature "NAME_EDUCATION_TYPE" is a candidate we should check. In order to make sure whether there is significant difference between different values of the feature, we need to estimate the standard deviation of the sample ratio
+### Convert the ordinal variables to the numerical variables
+Ordinal variables and the categorical variables are very similar, but ordinal variableshave intrinsic order. Some non-numerical variables which might have intrinsic order should be carefully checked. They might be better converted as numerical features rather than categorical variables. For example, the education-related feature "NAME_EDUCATION_TYPE" is a candidate we should check. In order to make sure whether there is significant difference between different values of the feature, we need to estimate the standard deviation of the sample ratio
 <img src="https://render.githubusercontent.com/render/math?math=\sigma=\sqrt{\frac{p(1-p)}{N}}">  in order to get the confidence interval (95% confidence level means the interval <img src="https://render.githubusercontent.com/render/math?math=[p-2\sigma,p \+ 2\sigma]">).
 
-3. creating new features based on some domain knowledge: when reading the HomeCredit_columns_descriptions.csv carefully, we can find that some features like DAYS_EMPLOYED (total days of being employed), AMT_INCOME_TOTAL (total income of the applicant per annum), AMT_ANNUITY (the annuity of each credit loan) can be used to create some interesting features like: INCOME_PER_DAYS_EMPLOYED = AMT_INCOME_TOTAL/DAYS_EMPLOYED.
+### Domain knowledge
+We can also create new features based on some domain knowledge. when reading the HomeCredit_columns_descriptions.csv carefully, we can find that some features like DAYS_EMPLOYED (total days of being employed), AMT_INCOME_TOTAL (total income of the applicant per annum), AMT_ANNUITY (the annuity of each credit loan) can be used to create some interesting features like: INCOME_PER_DAYS_EMPLOYED = AMT_INCOME_TOTAL/DAYS_EMPLOYED.
+
+### Treating KNN as feature engineering
+We use K-Nearest Neighbors (KNN) to add a "local knowledge" feature. To achieve this purpose, we can choose some features which present different distribution between different class label and then estimate the predicted class probability. Then then this predicted class probability is used as a new feature for downstream modeling. 
+
+Key points: 
+
+1.The choice of features for the KNN relies on the detailed exploratory data analysis.
+
+2. Multicollinearity is not a issue here because the information being incorporated into the second-stage model
+is highly local. This is an additional information rather than redundant information.
+
+More discussion about KNN as feature engineering: P.386 from Bruce, Peter, and Andrew Bruce. 2017. Practical Statistics for Data Scientists: 50 Essential Concepts. O’Reilly Media, Inc.
 
 ## Feature engineering with Featuretools
 Featuretools automatically creates features from relational datasets. This tool use the cencept Deep Feature Synthesis for automated feature engineering. The procedure is as followed:
@@ -67,5 +82,6 @@ We compare the ROC AUC sore of the submitted prediction between different data p
 https://towardsdatascience.com/how-to-learn-from-bigdata-files-on-low-memory-incremental-learning-d377282d38ff
 4. Optimize the Pandas Dataframe memory consuming for low environment
 https://medium.com/@alielagrebi/optimize-the-pandas-dataframe-memory-consuming-for-low-environment-24aa74cf9413
-4. Collinearity: a review of methods to deal with it and a simulation study evaluating their performance
+5. Collinearity: a review of methods to deal with it and a simulation study evaluating their performance
 https://onlinelibrary.wiley.com/doi/10.1111/j.1600-0587.2012.07348.x
+6. Bruce, Peter, and Andrew Bruce. 2017. Practical Statistics for Data Scientists: 50 Essential Concepts. O’Reilly Media, Inc
